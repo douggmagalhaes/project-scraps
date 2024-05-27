@@ -9,7 +9,7 @@ export interface User {
 
 export type UserCreateForm = Omit<User, "id">;
 
-export type UserLoginForm = Pick<User, "email" | "password">;
+export type UserLoginForm = Pick<User, "email" | "password" | "id">;
 
 export type UserProviderValues = {
   loading: boolean;

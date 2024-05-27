@@ -14,8 +14,12 @@ export const UserContext = createContext({} as UserProviderValues);
 export const UserProvider = ({
   children,
 }: React.PropsWithChildren): JSX.Element => {
-  const tokenLocalId = "@USERSCRAPS:TOKEN";
-  const tokenLocal = localStorage.getItem(tokenLocalId);
+  // talvez eu precise deixar o id do user salvo no token e mudar esse nome aqui
+  //tokenLocalId
+  const userTokenLocal = "@USERSCRAPS:TOKEN";
+  const tokenLocal = localStorage.getItem(userTokenLocal);
+
+  const userIdLocal = "@USERCRAPS:USERID";
 
   const [token, setToken] = useState(tokenLocal ? tokenLocal : "");
   const [loading, setLoading] = useState(false);
@@ -27,7 +31,7 @@ export const UserProvider = ({
   const navigate = useNavigate();
 
   useEffect((): void => {
-    const userId = localStorage.getItem("@USERSCRAP:USERID");
+    const userId = localStorage.getItem(userIdLocal);
 
     const getUser = async (): Promise<void> => {
       try {
@@ -62,8 +66,10 @@ export const UserProvider = ({
     try {
       const { data } = await api.post("/login", payload);
 
-      localStorage.setItem(tokenLocalId, data.accessToken);
+      localStorage.setItem(userTokenLocal, data.accessToken);
       setToken(data.accessToken);
+
+      localStorage.setItem(userIdLocal, data.user.id);
 
       navigate("/home");
       toast.success("Você foi logado com sucesso!");
@@ -75,7 +81,8 @@ export const UserProvider = ({
 
   const userLogout = (): void => {
     setToken("");
-    localStorage.removeItem(tokenLocalId);
+    localStorage.removeItem(userTokenLocal);
+    localStorage.removeItem(userIdLocal);
     navigate("/");
   };
 
