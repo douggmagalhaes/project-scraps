@@ -1,4 +1,4 @@
-import { AxiosRequestConfig } from "axios";
+import { AxiosError, AxiosRequestConfig } from "axios";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -32,15 +32,21 @@ export const UserProvider = ({
 
   useEffect((): void => {
     const userId = localStorage.getItem(userIdLocal);
+    //console.log(userId);
 
     const getUser = async (): Promise<void> => {
       try {
         setLoading(true);
         await api.get(`/users/${userId}`, authHeader);
-        navigate("/home");
+        navigate("/user");
       } catch (error) {
-        toast.error("Deu erro no auto login!");
-        console.log(error);
+        if (error instanceof AxiosError) {
+          setToken("");
+          localStorage.removeItem(userTokenLocal);
+          localStorage.removeItem(userIdLocal);
+          navigate("/");
+          toast.error(error.response?.data);
+        }
       } finally {
         setLoading(false);
       }
@@ -55,10 +61,11 @@ export const UserProvider = ({
     try {
       await api.post("/users", payload);
       toast.success("Usuário registrado com sucesso!");
-      navigate("/login");
+      navigate("/");
     } catch (error) {
-      toast.error("Deu erro no register!");
-      console.log(error);
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data);
+      }
     }
   };
 
@@ -71,11 +78,13 @@ export const UserProvider = ({
 
       localStorage.setItem(userIdLocal, data.user.id);
 
-      navigate("/home");
+      navigate("/user");
       toast.success("Você foi logado com sucesso!");
     } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data);
+      }
       console.log(error);
-      toast.error("Deu erro no login");
     }
   };
 
