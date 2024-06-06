@@ -15,6 +15,8 @@ export type UserProviderValues = {
   loading: boolean;
   token: string;
   authHeader: AxiosRequestConfig;
+  user: User | null;
+  //user: User;
 
   userLogin: (payload: UserLoginForm) => Promise<void>;
   userRegister: (payload: UserCreateForm) => Promise<void>;

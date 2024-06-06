@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { api } from "../../services/api";
 import {
+  User,
   UserCreateForm,
   UserLoginForm,
   UserProviderValues,
@@ -14,8 +15,12 @@ export const UserContext = createContext({} as UserProviderValues);
 export const UserProvider = ({
   children,
 }: React.PropsWithChildren): JSX.Element => {
+  //null
+  const [user, setUser] = useState<User | null>(null);
   // talvez eu precise deixar o id do user salvo no token e mudar esse nome aqui
   //tokenLocalId
+  //console.log("user context:", user);
+
   const userTokenLocal = "@USERSCRAPS:TOKEN";
   const tokenLocal = localStorage.getItem(userTokenLocal);
 
@@ -37,7 +42,8 @@ export const UserProvider = ({
     const getUser = async (): Promise<void> => {
       try {
         setLoading(true);
-        await api.get(`/users/${userId}`, authHeader);
+        const { data } = await api.get<User>(`/users/${userId}`, authHeader);
+        setUser(data);
         navigate("/user");
       } catch (error) {
         if (error instanceof AxiosError) {
@@ -55,7 +61,7 @@ export const UserProvider = ({
     if (token) {
       getUser();
     }
-  }, []);
+  }, [token]);
 
   const userRegister = async (payload: UserCreateForm): Promise<void> => {
     try {
@@ -98,6 +104,7 @@ export const UserProvider = ({
   return (
     <UserContext.Provider
       value={{
+        user,
         authHeader,
         loading,
         token,
