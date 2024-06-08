@@ -1,6 +1,5 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
-import { CreateScrapForm } from "../../Components/forms/CreateScrapForm";
+
 import { ScrapList } from "../../Components/ScrapList";
 import { ScrapContext } from "../../providers/ScrapContext";
 

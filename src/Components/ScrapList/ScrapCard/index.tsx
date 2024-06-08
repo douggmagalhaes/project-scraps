@@ -1,13 +1,16 @@
 import { useContext } from "react";
-import { Scrap } from "../../../providers/ScrapContext/interfaces";
+import { Link } from "react-router-dom";
+import { ScrapContext } from "../../../providers/ScrapContext";
+import { IScrap } from "../../../providers/ScrapContext/interfaces";
 import { UserContext } from "../../../providers/UserContext";
 
 interface IScrapCardProps {
-  scrap: Scrap;
+  scrap: IScrap;
 }
 
 export const ScrapCard = ({ scrap }: IScrapCardProps): JSX.Element => {
   const { user } = useContext(UserContext);
+  const { deleteScrap, selectScrapToEdit } = useContext(ScrapContext);
   return (
     <li>
       <div>
@@ -18,7 +21,19 @@ export const ScrapCard = ({ scrap }: IScrapCardProps): JSX.Element => {
         </p>
         <p>{scrap?.content}</p>
       </div>
-      <div>oxi</div>
+      <div>
+        {user?.id === scrap.userId ? (
+          <>
+            <button onClick={() => selectScrapToEdit(scrap)}>Editar</button>
+
+            <button onClick={() => deleteScrap(scrap.id)}>Deletar</button>
+          </>
+        ) : null}
+
+        <Link to="">
+          <button>Visualizar</button>
+        </Link>
+      </div>
     </li>
   );
 };

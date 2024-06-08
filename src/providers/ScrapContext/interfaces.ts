@@ -1,4 +1,4 @@
-export interface Scrap {
+export interface IScrap {
   readonly id: number;
   author?: string;
   email?: string;
@@ -6,12 +6,17 @@ export interface Scrap {
   userId?: number;
 }
 
-export type ScrapCreateForm = Omit<Scrap, "id">;
+export type TScrapCreateForm = Omit<IScrap, "id">;
 
-export type ScrapUpdateForm = Omit<Scrap, "id" | "userId">;
+export type TScrapUpdateForm = Omit<IScrap, "userId">;
 
-export type ScrapProviderValues = {
-  scrapList: Scrap[];
-  scrapCreate: (payload: ScrapCreateForm) => Promise<void>;
+export type TScrapProviderValues = {
+  scrapList: IScrap[];
+  editScrap: TScrapUpdateForm | null;
+  scrapCreate: (payload: TScrapCreateForm) => Promise<void>;
+  deleteScrap: (scrapId: number) => Promise<void>;
+  selectScrapToEdit: (scrap: TScrapUpdateForm) => void;
+  updateScrap: (scrap: TScrapUpdateForm) => void;
   //scrapUpdate: (payload: ScrapUpdateForm) => Promise<void>;
+  //scrapEdit: (scrap: TScrapUpdateForm) => Promise<void>;
 };

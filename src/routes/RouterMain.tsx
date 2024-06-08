@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { CreateScrapPage } from "../pages/CreateScrapPage";
+import { EditScrapPage } from "../pages/EditScrapPage";
 import { ErrorPage } from "../pages/ErrorPage";
 import { HomePage } from "../pages/HomePage";
 import { RegisterPage } from "../pages/RegisterPage";
@@ -18,6 +19,7 @@ export const RouterMain = (): JSX.Element => {
       <Route element={<PrivateRoutes />}>
         <Route path="/user" element={<UserPage />} />
         <Route path="/scraps" element={<CreateScrapPage />} />
+        <Route path="/scraps/edit" element={<EditScrapPage />} />
       </Route>
 
       <Route path="*" element={<ErrorPage />} />

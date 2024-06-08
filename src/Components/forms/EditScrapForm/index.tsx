@@ -1,15 +1,26 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { FieldValues, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { ScrapContext } from "../../../providers/ScrapContext";
 import { UserContext } from "../../../providers/UserContext";
 import { ButtonSubmit } from "../../Buttons/ButtonSubmit";
 import { TextArea } from "../../TextArea";
-import { mesageCreateForm } from "./mesageCreateForm.schema";
+import { mesageEditForm } from "./mesageEditForm.schema";
 
-export const CreateScrapForm = (): JSX.Element => {
-  const { scrapCreate } = useContext(ScrapContext);
+export const EditScrapForm = (): JSX.Element => {
+  const { editScrap, updateScrap } = useContext(ScrapContext);
   const { user } = useContext(UserContext);
+
+  console.log("testando a scrp editar no form:", editScrap);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!editScrap) {
+      navigate("/user");
+    }
+  }, [editScrap]);
   //console.log(user);
   const onSubmit = (payload: FieldValues): void => {
     //userLogin(payload as any);
@@ -23,11 +34,13 @@ export const CreateScrapForm = (): JSX.Element => {
     const newScrap = {
       author: user?.name,
       email: user?.email,
-      userId: user?.id,
-      content: payload.content,
+      content: payload?.content,
+      id: editScrap!.id,
     };
     //console.log(newScrap);
-    scrapCreate(newScrap);
+    //scrapCreate(newScrap);
+    //scrapEdit(newScrap);
+    updateScrap(newScrap);
     reset();
   };
   const {
@@ -36,20 +49,20 @@ export const CreateScrapForm = (): JSX.Element => {
     reset,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(mesageCreateForm),
+    resolver: zodResolver(mesageEditForm),
   });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
         <TextArea
-          label={"Sua mensagem"}
+          label={"Edite sua mensagem"}
           error={errors.content}
           {...register("content")}
         />
       </div>
       <div>
-        <ButtonSubmit text="Deixar scrap" type="submit" />
+        <ButtonSubmit text="Editar scrap" type="submit" />
       </div>
     </form>
   );
