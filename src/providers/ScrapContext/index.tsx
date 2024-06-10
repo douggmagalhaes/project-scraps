@@ -16,10 +16,11 @@ export const ScrapContext = createContext({} as TScrapProviderValues);
 export const ScrapProvider = ({
   children,
 }: React.PropsWithChildren): JSX.Element => {
-  const { user, authHeader } = useContext(UserContext);
-  const [scrapList, setScrapList] = useState<IScrap[]>([]);
+  const { authHeader } = useContext(UserContext);
 
+  const [scrapList, setScrapList] = useState<IScrap[]>([]);
   const [editScrap, setEditScrap] = useState<IScrap | null>(null);
+  const [viewScrap, setViewScrap] = useState<IScrap | null>(null);
 
   const navigate = useNavigate();
 
@@ -56,12 +57,18 @@ export const ScrapProvider = ({
     }
   };
 
-  const selectScrapToEdit = (scrap: IScrap) => {
+  const selectScrapToEdit = (scrap: IScrap): void => {
     setEditScrap(scrap);
     navigate("/scraps/edit");
   };
 
-  const updateScrap = async (scrap: IScrap) => {
+  const selectScrapToView = (scrap: IScrap): void => {
+    setViewScrap(scrap);
+    navigate("/scraps/view");
+    console.log("cliquei nessa scrap:", viewScrap);
+  };
+
+  const updateScrap = async (scrap: IScrap): Promise<void> => {
     try {
       const newEditScrap = { ...editScrap, ...scrap };
 
@@ -120,9 +127,11 @@ export const ScrapProvider = ({
     <ScrapContext.Provider
       value={{
         scrapList,
+        viewScrap,
         scrapCreate,
         deleteScrap,
         selectScrapToEdit,
+        selectScrapToView,
         updateScrap,
         editScrap,
       }}

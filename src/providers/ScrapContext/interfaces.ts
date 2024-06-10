@@ -12,11 +12,11 @@ export type TScrapUpdateForm = Omit<IScrap, "userId">;
 
 export type TScrapProviderValues = {
   scrapList: IScrap[];
-  editScrap: TScrapUpdateForm | null;
+  editScrap: IScrap | null;
+  viewScrap: IScrap | null;
   scrapCreate: (payload: TScrapCreateForm) => Promise<void>;
   deleteScrap: (scrapId: number) => Promise<void>;
-  selectScrapToEdit: (scrap: TScrapUpdateForm) => void;
-  updateScrap: (scrap: TScrapUpdateForm) => void;
-  //scrapUpdate: (payload: ScrapUpdateForm) => Promise<void>;
-  //scrapEdit: (scrap: TScrapUpdateForm) => Promise<void>;
+  selectScrapToEdit: (scrap: IScrap) => void;
+  selectScrapToView: (scrap: IScrap) => void;
+  updateScrap: (scrap: IScrap) => void;
 };

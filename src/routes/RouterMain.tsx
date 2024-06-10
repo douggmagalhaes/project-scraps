@@ -5,6 +5,7 @@ import { ErrorPage } from "../pages/ErrorPage";
 import { HomePage } from "../pages/HomePage";
 import { RegisterPage } from "../pages/RegisterPage";
 import { UserPage } from "../pages/UserPage";
+import { ViewScrapPage } from "../pages/ViewScrapPage";
 import { PrivateRoutes } from "./PrivateRoutes";
 import { PublicRoutes } from "./PublicRoutes";
 
@@ -20,6 +21,7 @@ export const RouterMain = (): JSX.Element => {
         <Route path="/user" element={<UserPage />} />
         <Route path="/scraps" element={<CreateScrapPage />} />
         <Route path="/scraps/edit" element={<EditScrapPage />} />
+        <Route path="/scraps/view" element={<ViewScrapPage />} />
       </Route>
 
       <Route path="*" element={<ErrorPage />} />

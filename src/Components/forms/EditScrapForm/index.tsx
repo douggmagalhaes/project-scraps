@@ -12,8 +12,6 @@ export const EditScrapForm = (): JSX.Element => {
   const { editScrap, updateScrap } = useContext(ScrapContext);
   const { user } = useContext(UserContext);
 
-  console.log("testando a scrp editar no form:", editScrap);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,25 +19,15 @@ export const EditScrapForm = (): JSX.Element => {
       navigate("/user");
     }
   }, [editScrap]);
-  //console.log(user);
-  const onSubmit = (payload: FieldValues): void => {
-    //userLogin(payload as any);
-    //console.log(payload);
-    //"author": "José da Silva",
-    //"email": "josedasilva@email.com",
-    //"content": "Belezinha meu amigão?",
-    //"userId": 1
-    //const {name: } = user
 
+  const onSubmit = (payload: FieldValues): void => {
     const newScrap = {
       author: user?.name,
       email: user?.email,
       content: payload?.content,
       id: editScrap!.id,
     };
-    //console.log(newScrap);
-    //scrapCreate(newScrap);
-    //scrapEdit(newScrap);
+
     updateScrap(newScrap);
     reset();
   };
