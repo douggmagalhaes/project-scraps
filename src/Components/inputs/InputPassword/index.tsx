@@ -11,13 +11,23 @@ export const InputPassword = forwardRef(
     const type: string = isHidden ? "text" : "password";
     return (
       <div>
-        <label htmlFor="">{label}</label>
+        <label htmlFor="passwordInput">{label}</label>
 
-        <div>
-          <input ref={ref} {...rest} type={type} />
+        <div className="relative">
+          <input
+            id="passwordInput"
+            className="w-[300px] h-[38px] p-2 border-2 border-blue_purple_600 focus:border-blue_purple_500 rounded-xl outline-none"
+            ref={ref}
+            {...rest}
+            type={type}
+          />
           {error ? <p>{error.message}</p> : null}
 
-          <button type="button" onClick={() => setIsHidden(!isHidden)}>
+          <button
+            className="absolute top-[9px] right-[14px]"
+            type="button"
+            onClick={() => setIsHidden(!isHidden)}
+          >
             {!isHidden ? <FaRegEyeSlash size={21} /> : <FaRegEye size={21} />}
           </button>
         </div>
